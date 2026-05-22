@@ -20,7 +20,6 @@ parser code {:
 
 terminal IF, THEN, ELSE, WHILE;
 terminal ASSIGN, LPAREN, RPAREN, LBRACE, RBRACE, SEMI;
-terminal EOF;
 
 terminal String ID, NUMBER;
 terminal String ADD_OP, MUL_OP, REL_OP;
@@ -61,7 +60,7 @@ precedence left MUL_OP;
 start with program;
 
 /* Programa = lista de comandos */
-program ::= stmt_list EOF
+program ::= stmt_list
           ;
 
 /* Lista recursiva de comandos */
@@ -92,6 +91,7 @@ while_stmt ::= WHILE LPAREN expr RPAREN block_stmt
 
 /* Bloco */
 block_stmt ::= LBRACE stmt_list RBRACE
+             | LBRACE RBRACE
              ;
 
 /* Comando nulo */
