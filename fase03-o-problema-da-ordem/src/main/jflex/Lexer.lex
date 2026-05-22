@@ -31,7 +31,7 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 Letter = [a-zA-Z]
 Digit  = [0-9]
 
-Number = [0-9]+(\.[0-9]+)?([Ee][+-]?[0-9]+)?
+Number = {Digit}+(\.{Digit}+)?([Ee][+-]?{Digit}+)?
 
 Identifier = {Letter}({Letter}|{Digit}|_){0,31}
 
@@ -95,18 +95,22 @@ OversizedIdentifier = {Letter}({Letter}|{Digit}|_){32,}
     /* IDENTIFICADORES E NÚMEROS                                                 */
     /* ========================================================================= */
 
+    {OversizedIdentifier}
+    {
+        throw new RuntimeException(
+            "Erro Léxico: Identificador gigante -> " + yytext()
+        );
+    }
+
     {Identifier}
-                { return symbol(sym.ID, yytext()); }
+    {
+        return symbol(sym.ID, yytext());
+    }
 
     {Number}
-                { return symbol(sym.NUMBER, yytext()); }
-
-    {OversizedIdentifier}
-                {
-                    throw new RuntimeException(
-                        "Erro Léxico: Identificador gigante -> " + yytext()
-                    );
-                }
+    {
+        return symbol(sym.NUMBER, yytext());
+    }
 
     /* ========================================================================= */
     /* ERRO                                                                      */
@@ -120,4 +124,5 @@ OversizedIdentifier = {Letter}({Letter}|{Digit}|_){32,}
     }
 }
 
-<<EOF>> { return symbol(sym.EOF); }
+/* EOF */
+<<EOF>> { return null; }
