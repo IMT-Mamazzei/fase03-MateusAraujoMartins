@@ -35,9 +35,6 @@ Number = {Digit}+(\.{Digit}+)?([Ee][+-]?{Digit}+)?
 
 Identifier = {Letter}({Letter}|{Digit}|_){0,31}
 
-/* Identificador com mais de 32 chars */
-OversizedIdentifier = {Letter}({Letter}|{Digit}|_){32,}
-
 %%
 
 <YYINITIAL> {
@@ -94,13 +91,6 @@ OversizedIdentifier = {Letter}({Letter}|{Digit}|_){32,}
     /* ========================================================================= */
     /* IDENTIFICADORES E NÚMEROS                                                 */
     /* ========================================================================= */
-
-    {OversizedIdentifier}
-    {
-        throw new RuntimeException(
-            "Erro Léxico: Identificador gigante -> " + yytext()
-        );
-    }
 
     {Identifier}
     {
